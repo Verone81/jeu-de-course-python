@@ -32,7 +32,7 @@ image_fond = pygame.image.load("images/route.png")
 image_auto = pygame.image.load("images/auto.png")
 
 
-# variable obstacle hasard
+# variable obstacle avec position au hasard
 xx_obstacle = random.choice([125, 240])
 yy_obstacle = 0
 vitesse_obstacle = 5
@@ -42,9 +42,9 @@ mes_obstacles = ["images/auto_jaune.png", "images/auto_bleu.png", "images/auto_v
 image_obstacle = random.choice(mes_obstacles)
 obstacle = pygame.image.load(image_obstacle)
 
-
 # dimension de l'image du fond qui prend tout l'espace disponible
 image_fond = pygame.transform.scale(image_fond, (largeur, hauteur))
+
 # dimension de l'image auto
 image_auto = pygame.transform.scale(image_auto, (largeur_auto, hauteur_auto))
 
@@ -74,14 +74,16 @@ while True:
         elif event.type == pygame.KEYUP:
             mouvement_xx_auto = -3
 
-    if xx_auto < 50 or xx_auto > largeur - 50:
+    if xx_auto < -10 or xx_auto > largeur + 10:
         exit()
 
+    # l'afichaffe de tout les element du jeu
     fenetre.fill(couleur_fond)
     fenetre.blit(image_fond, (0, 0))
     fenetre.blit(image_auto, (xx_auto, yy_auto))
     fenetre.blit(obstacle, (xx_obstacle, yy_obstacle))
     fenetre.blit(score, (10, 40))
+
     # on reintilise le defilement des vehicule en haut de la page
     if yy_obstacle > hauteur:
         image_obstacle = random.choice(mes_obstacles)
@@ -99,6 +101,8 @@ while True:
     if rect_image_auto.colliderect(rect_obstacle):
         game_over()
 
+    # mise a jour de la position des obstacles et de l'auto
     yy_obstacle += vitesse_obstacle
     xx_auto += mouvement_xx_auto
+
     pygame.display.update()
